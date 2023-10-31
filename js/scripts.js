@@ -27,25 +27,54 @@ AddressBook.prototype.deleteContact = function(id) {
 }
 
 // Business Logic for Contacts
-function Contact(firstName, lastName, phoneNumber, emailAddress) {
+function Contact(firstName, lastName, phoneNumber, emailAddress, streetAddress, city, state, zipCode) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.phoneNumber = phoneNumber;
     this.emailAddress = emailAddress;
+    this.streetAddress = streetAddress;
+    this.city = city;
+    this.state = state;
+    this.zipCode = zipCode;
 }
 Contact.prototype.fullName = function() {
     return this.firstName + " " + this.lastName;
 };
 
+// User Interface Logic 
+let addressBook = new AddressBook();
 
-// let addressBook = new AddressBook();
-// let contact = new Contact("Ada", "Lovelace", "503-555-0100");
-// let contact2 = new Contact("Grace", "Hopper", "503-555-0199");
-// addressBook.addContact(contact);
-// addressBook.addContact(contact2);
-// addressBook.findContact(2);
-// > Object.keys(addressBook.contacts)[0];
-// "1"
-// > typeof Object.keys(addressBook.contacts)[0];
-// "string"
+function listContacts(addressBookToDisplay) {
+    let contactsDiv = document.querySelector("div#contacts");
+    contactsDiv.innerText = null;
+    const ul = document.createElement("ul");
+    Object.keys(addressBookToDisplay.contacts).forEach(function(key){
+        const contact = addressBookToDisplay.findContact(key);
+        const li = document.createElement("li");
+        li.append(contact.fullName());
+        li.setAttribute("id", contact.id);
+        ul.append(li);
+    });
+    contactsDiv.append(ul);
+}
+
+function handleFormSubmission(event) {
+    event.preventDefault();
+    const inputtedFirstName = document.querySelector("input#new-first-name").value;
+    const inputtedLastName = document.querySelector("input#new-last-name").value;
+    const inputtedPhoneNumber = document.querySelector("input#new-phone-number").value;
+    const inputtedEmailAddress = document.querySelector("input#new-email-address").value;
+    const inputtedStreetAddress = document.querySelector("input#new-street-address").value;
+    const inputtedCity = document.querySelector("input#new-city").value;
+    const inputtedState = document.querySelector("input#new-state").value;
+    const inputtedZipCode = document.querySelector("input#new-zip").value;
+    let newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber, inputtedEmailAddress, inputtedStreetAddress, inputtedCity, inputtedState, inputtedZipCode);
+    addressBook.addContact(newContact);
+    console.log(addressBook.contacts);
+    listContacts(addressBook);
+}
+
+window.addEventListener("load", function () {
+    document.querySelector("form#new-contact").addEventListener("submit", handleFormSubmission);
+});
 
