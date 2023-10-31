@@ -3,22 +3,22 @@ function AddressBook() {
     this.contacts = {};
     this.currentId = 0;
 }
-AddressBook.prototype.addContact = function(contact) {
+AddressBook.prototype.addContact = function (contact) {
     contact.id = this.assignId();
     this.contacts[contact.id] = contact;
 };
-AddressBook.prototype.assignId = function() {
+AddressBook.prototype.assignId = function () {
     this.currentId += 1;
     return this.currentId;
 };
-AddressBook.prototype.findContact = function(id) {
+AddressBook.prototype.findContact = function (id) {
     if (this.contacts[id] !== undefined) {
         return this.contacts[id];
     }
     return false;
 };
 
-AddressBook.prototype.deleteContact = function(id) {
+AddressBook.prototype.deleteContact = function (id) {
     if (this.contacts[id] === undefined) {
         return false;
     }
@@ -37,7 +37,7 @@ function Contact(firstName, lastName, phoneNumber, emailAddress, streetAddress, 
     this.state = state;
     this.zipCode = zipCode;
 }
-Contact.prototype.fullName = function() {
+Contact.prototype.fullName = function () {
     return this.firstName + " " + this.lastName;
 };
 
@@ -48,7 +48,7 @@ function listContacts(addressBookToDisplay) {
     let contactsDiv = document.querySelector("div#contacts");
     contactsDiv.innerText = null;
     const ul = document.createElement("ul");
-    Object.keys(addressBookToDisplay.contacts).forEach(function(key){
+    Object.keys(addressBookToDisplay.contacts).forEach(function(key) {
         const contact = addressBookToDisplay.findContact(key);
         const li = document.createElement("li");
         li.append(contact.fullName());
@@ -57,6 +57,19 @@ function listContacts(addressBookToDisplay) {
     });
     contactsDiv.append(ul);
 }
+
+function displayContactDetails(event) {
+    const contact = addressBook.findContact(event.target.id);
+    document.querySelector("span#first-name").innerText = contact.firstName;
+    document.querySelector("span#last-name").innerText = contact.lastName;
+    document.querySelector("span#phone-number").innerText = contact.phoneNumber;
+    document.querySelector("span#email-address").innerText = contact.emailAddress;
+    document.querySelector("span#street-address").innerText = contact.streetAddress;
+    document.querySelector("span#city").innerText = contact.city;
+    document.querySelector("span#state").innerText = contact.state;
+    document.querySelector("span#zip-code").innerText = contact.zipCode;
+    document.querySelector("div#contact-details").removeAttribute("class");
+}   
 
 function handleFormSubmission(event) {
     event.preventDefault();
@@ -76,5 +89,6 @@ function handleFormSubmission(event) {
 
 window.addEventListener("load", function () {
     document.querySelector("form#new-contact").addEventListener("submit", handleFormSubmission);
+    document.querySelector("div#contacts").addEventListener("click", displayContactDetails);
 });
 
