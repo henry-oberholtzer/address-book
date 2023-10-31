@@ -27,12 +27,12 @@ AddressBook.prototype.deleteContact = function(id) {
 }
 
 // Business Logic for Contacts
-function Contact(firstName, lastName, phoneNumber) {
+function Contact(firstName, lastName, phoneNumber, emailAddress) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.phoneNumber = phoneNumber;
+    this.emailAddress = emailAddress;
 }
-
 Contact.prototype.fullName = function() {
     return this.firstName + " " + this.lastName;
 };
